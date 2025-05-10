@@ -1,44 +1,32 @@
 import Mathlib.Tactic
 
-section
-
-variable {α β : Type}
-variable (f : α → β)
-variable (s t : Set α)
-variable (u v : Set β)
-
 open Function
-open Set
+open Classical
 
 section
-variable {α β : Type*} [Inhabited α]
+variable {α β : Type} [Inhabited α]
 
 #check (default : α)
 
 variable (P : α → Prop) (h : ∃ x, P x)
 
-#check Classical.choose h
+#check (choose h : α)                      -- Classical
 
-example : P (Classical.choose h) :=
-  Classical.choose_spec h
+example : P (choose h) :=
+  choose_spec h                             -- Classical
 
 noncomputable section
-
-open Classical
-
 -- dependent if-then-else の使用例
 def inverse (f : α → β) : β → α := fun y : β ↦
-  if h : ∃ x, f x = y then Classical.choose h else default
+  if h : ∃ x, f x = y then choose h else default
 
 -- ssr_dependent_if.v との対応では、これが証明できればよい。
 theorem inverse_spec {f : α → β} (y : β) (h : ∃ x, f x = y) : f (inverse f y) = y := by
   rw [inverse, dif_pos h]
-  exact Classical.choose_spec h
+  exact choose_spec h
 
--- ssr_dependent_if.v
+section
 variable (f : α → β)
-
-open Function
 
 #print LeftInverse
 #print RightInverse
@@ -61,6 +49,8 @@ example : Surjective f ↔ RightInverse (inverse f) f := by
     use inverse f y
     apply h
 
+end
+end
 end
 
 -- END
