@@ -63,27 +63,4 @@ example : Surjective f ↔ RightInverse (inverse f) f := by
 
 end
 
-section
-variable {α : Type*}
-open Function
-
--- Cantorの定理
--- ssr_cantor_theorem.v
-theorem Cantor : ∀ f : α → Set α, ¬Surjective f := by
-  intro f surjf
-  let S := { i | i ∉ f i }
-  rcases surjf S with ⟨j, h⟩
-  have h₁ : j ∉ f j := by
-    intro h'
-    have : j ∉ f j := by
-      rwa [h] at h'
-    contradiction
-  have h₂ : j ∈ S := by
-    apply h₁
-  have h₃ : j ∉ S := by
-    rwa [h] at h₁
-  contradiction
-
-end
-
 -- END
