@@ -25,29 +25,44 @@ theorem inverse_spec {f : α → β} (y : β) (h : ∃ x, f x = y) : f (inverse 
   rw [inverse, dif_pos h]
   exact choose_spec h
 
+-- MIL で証明している定理
+-- https://leanprover-community.github.io/mathematics_in_lean/C04_Sets_and_Functions.html#functions
 section
 variable (f : α → β)
 
+#print Injective
+#print Surjective
 #print LeftInverse
 #print RightInverse
 
 example : Injective f ↔ LeftInverse (inverse f) f := by
   constructor
-  · intro h y
-    apply h
+  -- → の証明
+  · intro h' y
+    -- rw [Injective] at h'
+    apply h'                                -- 両辺に f を掛ける。
     apply inverse_spec
-    use y
-  · intro h x1 x2 e
-    rw [← h x1, ← h x2, e]
+    -- ∃ x, f x = f y
+    use y                                   -- exists y
+  -- ← の証明
+  · intro h' x1 x2 e
+    -- rw [LeftInverse] at h'
+    rw [← h' x1]
+    rw [← h' x2]
+    rw [e]
 
 example : Surjective f ↔ RightInverse (inverse f) f := by
   constructor
-  · intro h y
+  -- → の証明
+  · intro h' y
     apply inverse_spec
-    apply h
-  · intro h y
-    use inverse f y
-    apply h
+    -- rw [Surjective] at h'
+    apply h'
+  -- ← の証明
+  · intro h' y
+    use (inverse f y)                       -- exists (inverse f y)
+    -- rw [RightInverse, LeftInverse] at h'
+    apply h'
 
 end
 end
