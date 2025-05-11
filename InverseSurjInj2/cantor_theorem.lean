@@ -2,6 +2,7 @@ import Mathlib.Tactic
 
 -- Cantorの定理
 -- see also. ssr_cantor_theorem.v
+-- https://leanprover-community.github.io/mathematics_in_lean/C04_Sets_and_Functions.html#functions
 
 -- 集合αの冪集合の濃度は、もとの集合αの濃度よりの真に大きい。
 -- そのことを「集合αからαの冪集合への関数fは全射ではない」で示す。
