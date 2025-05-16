@@ -30,34 +30,39 @@ theorem Cantor : ∀ f : α → Set α, ¬Surjective f := by
 
 
 theorem Cantor' : ∀ f : α → Set α, ¬Surjective f := by
+  unfold Surjective
   intro f surjf
+  -- surjf : ∀ (b : Set α), ∃ a, f a = b
+  -- ゴールは False なので、矛盾を導く。
   
   -- 対角線の否定を導入する。
   let B := { x | x ∉ f x }
   
   -- f が全射という仮定を使って、ある a が存在し f a = B とする。
-  -- 前提のexistを場合分けする。
-  rcases surjf B with ⟨a, hfa⟩              -- a : α, hfa : f a = B
+  -- 具体的には、surjf の b に 集合 B を与える。
+  -- ``surjf B : ∃ a, f a = B``
+  -- これは前提なので、この a を場合けして a と hfa をコンテキストに移す。
+  rcases (surjf B) with ⟨a, hfa⟩            -- a : α, hfa : f a = B
   
   have h₁ : a ∉ f a := by
     intro h'                                -- h' : a ∈ f a
-  
     have h₄ : a ∉ f a := by
       rw [hfa] at h'                        -- h' : a ∈ B
-      exact h'
-    -- contradiaction                       -- h' と h₄ から矛盾
+      use h'
+      -- h' と h₄ から矛盾
     apply h₄
     assumption
   
+  -- ゴールは False なので、矛盾を導く。
   -- a ∈ B が真の場合
   have h₂ : a ∈ B := by
-    exact h₁
-  
+    use h₁
+
   -- a ∈ B が偽の場合
   have h₃ : a ∉ B := by
     rw [hfa] at h₁                          -- h₁ : a ∉ B
     contradiction                           -- h₁ と h₁ から矛盾
-  
+
   -- h₂ と h₃ から矛盾を導く。
   contradiction
   
