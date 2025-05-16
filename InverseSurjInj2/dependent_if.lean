@@ -7,13 +7,16 @@ section
 variable {α β : Type} [Inhabited α]
 
 #check (default : α)
+-- #check (default : β)
 
+section
 variable (P : α → Prop) (h : ∃ x, P x)
 
 #check (choose h : α)                      -- Classical
 
 example : P (choose h) :=
   choose_spec h                             -- Classical
+end
 
 noncomputable section
 -- dependent if-then-else の使用例
@@ -35,33 +38,34 @@ variable (f : α → β)
 #print LeftInverse
 #print RightInverse
 
+-- f が単射であることと、左逆写像g (g ∘ f = id) を持つことは同値である。
 example : Injective f ↔ LeftInverse (inverse f) f := by
+  rw [Injective, LeftInverse]
   constructor
   -- → の証明
   · intro h' y
-    -- rw [Injective] at h'
     apply h'                                -- 両辺に f を掛ける。
     apply inverse_spec
     -- ∃ x, f x = f y
     use y                                   -- exists y
   -- ← の証明
   · intro h' x1 x2 e
-    -- rw [LeftInverse] at h'
     rw [← h' x1]
     rw [← h' x2]
     rw [e]
 
+-- f が全射であることと、右逆写像g (f ∘ g = id) を持つことは同値である。
 example : Surjective f ↔ RightInverse (inverse f) f := by
+  rw [Surjective, RightInverse, LeftInverse]
   constructor
   -- → の証明
   · intro h' y
     apply inverse_spec
-    -- rw [Surjective] at h'
     apply h'
   -- ← の証明
   · intro h' y
+    -- ∃ a, f a = y
     use (inverse f y)                       -- exists (inverse f y)
-    -- rw [RightInverse, LeftInverse] at h'
     apply h'
 
 end
