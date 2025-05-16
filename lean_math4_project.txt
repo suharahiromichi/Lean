@@ -1,0 +1,53 @@
+Mathlib4 を使う Lean Project の作り方
+
+2025_05_10
+
+https://aconite-ac.github.io/how_to_install_lean/lake-package-manager/how-to-create-project.html
+
+Mathlib4を使うLeanプロジェクト my_project を新規作成する手順を説明します。まずターミナルを開きます。
+
+cd コマンドを使って my_project を作りたいフォルダに移動します。
+次のコマンドを実行します。Mathlib4への依存関係が設定された新しいLeanプロジェクトが作成されます。
+
+$ lake new my_project math
+
+次のコマンドを実行し、作成したLeanプロジェクト内に移動します。
+
+$ cd my_project
+
+次のコマンドを実行し、Mathlib4を含む被依存パッケージをダウンロードします。
+
+$ lake update
+
+次のコマンドを実行し、Mathlib4のキャッシュされたビルド済ファイルをダウンロードします。
+
+$ lake exe cache get
+
+次のコマンドを実行し、Leanファイルを置くためのサブディレクトリ MyProject を作成します。
+
+VS Codeを開き、画面上部にある File メニューを開き、Open folder(Macの場合は Open)をクリックし、
+my_project フォルダ(MyProject フォルダではありません)を選択します。
+
+これでMathlib4を使うLeanプロジェクト my_project の新規作成は完了です。
+以降、プロジェクトのLeanファイル(拡張子 .lean)は MyProject フォルダかそのサブフォルダ上に作成してください。
+
+$ cd MyProject
+$ edit test.lean
+
+import Mathlib.Topology.Basic
+#check TopologicalSpace
+
+#check TopologicalSpace にマウスカーソルを乗せ、
+VS Codeの右側の「Lean Infoview」に次のように表示されたら確認完了です。
+TopologicalSpace.{u} (α : Type u) : Type u
+
+Emacs の場合は ^C-Tab を叩く。
+
+
+自作Leanファイル内で他の自作Leanファイルをインポートすることもできます。
+例えば、my_project/MyProject/Definitions.lean と my_project/MyProject/Lemmas.lean が存在する場合、
+Lemmas.lean の先頭に次のように書くことで、Definitions.lean の内容が利用可能になります。
+
+import MyProject.Definitions
+
+以上
