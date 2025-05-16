@@ -16,25 +16,23 @@ example (f : A → Set A) : ¬ Surjective f := by
   -- ゴールは False である。
   intro (hsurj : Surjective f)
 
-  -- A の部分集合 Y を， 以下のように取る
-  -- Y = {x | x ∉ f(x)}
   -- 対角線の否定を導入する。
+  -- A の部分集合 B を， 以下のように取る
+  -- B = {x | x ∉ f(x)}
   let B := {x | x ∉ f x}
 
   -- f は全射なので， f x = B となる x が存在する
   -- 前提の H : exists ``∃ a, f a = B`` の場合分けをする。
   obtain ⟨x, hx⟩ := hsurj B
 --obtain H := hsurj B
---rcases H with ⟨x, hx⟩
+--rcases H with ⟨x, hsurj⟩
   -- x : A
-  -- hx : f x = B
+  -- hsurj : f x = B
 
-  -- x について， x ∈ B ↔ x ∉ B が示せる
+  -- x について， x ∈ B ↔ x ∉ B が示せる。
   have H1 : x ∈ B ↔ x ∉ B := by
     constructor
-
     -- 左から右を示す
-    -- ← 
     case mp =>
       -- x ∈ B だと仮定する
       intro hB
@@ -49,7 +47,6 @@ example (f : A → Set A) : ¬ Surjective f := by
       rwa [hx] at hB
 
     -- 右から左を示す
-    -- →
     case mpr =>
       -- x ∉ B だと仮定する
       intro hB
