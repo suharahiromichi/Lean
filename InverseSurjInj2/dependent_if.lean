@@ -19,13 +19,18 @@ example : P (choose h) :=
 end
 
 noncomputable section
+-- dependent if-then-else と一緒に証明されている補題
+#check dif_pos                 -- h が成り立つなら結果は then の値
+#check dif_neg                 -- h が成り立たないなら結果は else の値
+
 -- dependent if-then-else の使用例
 def inverse (f : α → β) : β → α := fun y : β ↦
   if h : ∃ x, f x = y then choose h else default
 
 -- ssr_dependent_if.v との対応では、これが証明できればよい。
 theorem inverse_spec {f : α → β} (y : β) (h : ∃ x, f x = y) : f (inverse f y) = y := by
-  rw [inverse, dif_pos h]
+  rw [inverse]
+  rw [dif_pos h]
   exact choose_spec h
 
 -- MIL で証明している定理
