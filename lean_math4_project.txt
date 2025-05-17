@@ -2,6 +2,9 @@ Mathlib4 を使う Lean Project の作り方
 
 2025_05_10
 
+必要ならば Elan をインストールして、path を通しておく。$HOME/.elan/bin 。
+
+以下の説明は次に基づく：
 https://aconite-ac.github.io/how_to_install_lean/lake-package-manager/how-to-create-project.html
 
 Mathlib4を使うLeanプロジェクト my_project を新規作成する手順を説明します。まずターミナルを開きます。
