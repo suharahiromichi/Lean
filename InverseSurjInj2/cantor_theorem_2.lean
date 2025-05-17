@@ -12,9 +12,10 @@ variable (A : Type)
 open Function
 
 example (f : A → Set A) : ¬ Surjective f := by
+  rw [Surjective]
   -- f が全射だと仮定する。
   -- ゴールは False である。
-  intro (hsurj : Surjective f)
+  intro hsurj                               -- Surjective f
 
   -- 対角線の否定を導入する。
   -- A の部分集合 B を， 以下のように取る
@@ -23,9 +24,9 @@ example (f : A → Set A) : ¬ Surjective f := by
 
   -- f は全射なので， f x = B となる x が存在する
   -- 前提の H : exists ``∃ a, f a = B`` の場合分けをする。
-  obtain ⟨x, hx⟩ := hsurj B
---obtain H := hsurj B
---rcases H with ⟨x, hsurj⟩
+  have H := hsurj B
+  rcases H with ⟨x, hsurj⟩
+  -- obtain ⟨x, hx⟩ := hsurj B
   -- x : A
   -- hsurj : f x = B
 
@@ -44,7 +45,7 @@ example (f : A → Set A) : ¬ Surjective f := by
   
       -- f x = B だったから， x ∉ B
       -- rwa は、rw のあと assumption を行う。
-      rwa [hx] at hB
+      rwa [hsurj] at hB
 
     -- 右から左を示す
     case mpr =>
@@ -53,7 +54,7 @@ example (f : A → Set A) : ¬ Surjective f := by
 
       -- f x = B だったから， x ∉ f x
       -- 前提 hB は、置き換えられる。
-      replace hB : x ∉ f x := by rwa [← hx] at hB
+      replace hB : x ∉ f x := by rwa [← hsurj] at hB
 
       -- B の定義から， x ∈ B
       assumption
